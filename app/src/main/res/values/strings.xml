@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PayBack</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="debtSwitch"></string>
+    <string name="debtSwitchView">Debt Type</string>
+    <string name="description">Description</string>
+    <string name="saveButton">Save</string>
+    <string name="pNameDisplay">Large Text</string>
+
+</resources>

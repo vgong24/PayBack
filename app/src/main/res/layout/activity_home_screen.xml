@@ -1,0 +1,162 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="wrap_content" tools:context=".HomeScreen"
+    android:orientation="horizontal">
+
+    <TabHost
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/tabHost">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"></TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <LinearLayout
+                    android:id="@+id/allTab"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:focusable="false"
+                    android:layout_gravity="center_horizontal|top"
+                    android:weightSum="1">
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/listView"
+                        android:layout_gravity="center_horizontal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/spotTab"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="left|bottom"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/oweTab"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:focusableInTouchMode="false"
+                    android:layout_gravity="center_horizontal|top"></LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/addDebt"
+                    android:focusableInTouchMode="false">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:text="Name"
+                        android:ems="10"
+                        android:id="@+id/pName"
+                        android:layout_gravity="center_horizontal"
+                        android:editable="true"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:padding="10dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/amountInfo">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="Amount"
+                            android:id="@+id/amountView"
+                            android:layout_gravity="center_horizontal|left"
+                            android:paddingBottom="10dp"
+                            android:padding="10dp" />
+
+                        <EditText
+                            android:layout_alignParentLeft="true"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:ems="10"
+                            android:id="@+id/amountEdit"
+                            android:layout_gravity="center_horizontal|right"
+                            android:editable="true"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:padding="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/debtSwitchInfo">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="@string/debtSwitchView"
+                            android:id="@+id/debtSwitchView"
+                            android:padding="10dp"
+                            android:paddingRight="50dp"
+                            android:layout_marginRight="50dp" />
+
+                        <Switch
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/debtSwitch"
+                            android:id="@+id/debtSwitch"
+                            android:checked="false"
+                            android:padding="10dp"
+                            android:layout_gravity="right"
+                            android:textOff="Spot"
+                            android:textOn="Owe"
+                            />
+                    </LinearLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:ems="10"
+                        android:id="@+id/descriptionEdit"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/description"
+                        android:maxLength="100"
+                        android:maxLines="4"
+                        android:singleLine="true"
+                        android:padding="10dp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/saveButton"
+                        android:id="@+id/saveButton"
+                        android:layout_gravity="center_horizontal" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</RelativeLayout>
