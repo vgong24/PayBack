@@ -3,6 +3,7 @@ package com.example.victor.payback;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -46,15 +47,8 @@ public class HomeScreen extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        nameTxt = (EditText) findViewById(R.id.pName);
-        //phoneTxt = (EditText) findViewById(R.id.)
-        amountTxt = (EditText) findViewById(R.id.amountEdit);
-        debtSwitch = (Switch) findViewById(R.id.debtSwitch);
-        descTxt = (EditText) findViewById(R.id.descriptionEdit);
-        saveBtn = (Button) findViewById(R.id.saveButton);
-        profileListView = (ListView) findViewById(R.id.listView);
-
-        dbHandler = new DatabaseHandler(getApplicationContext());
+        //Initialize global variables
+        initVariables();
 
         registerForContextMenu(profileListView);
         profileListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -71,9 +65,60 @@ public class HomeScreen extends ActionBarActivity {
 
         //TextListeners
         textListeners();
-
-
         //Creating TabHost
+        initTabs();
+
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(debtSwitch.isChecked()){
+                    debtTypeTxt = "Owe";
+                }else{
+                    debtTypeTxt = "Spotted";
+                }
+
+               DebtProfile profile = new DebtProfile(dbHandler.getProfileCount(), String.valueOf(nameTxt.getText()), Double.parseDouble(amountTxt.getText().toString()), debtTypeTxt, "", String.valueOf(descTxt.getText()));
+               if(!profileExists(profile)) {
+                   dbHandler.createDebtProfile(profile);
+                   profiles.add(profile);
+                   profileAdapter.notifyDataSetChanged();
+
+                   Toast.makeText(getApplicationContext(), String.valueOf(nameTxt.getText()) + " has been added", Toast.LENGTH_SHORT).show();
+                   clearFields();
+                   return;
+               }
+                Toast.makeText(getApplicationContext(), String.valueOf(nameTxt.getText()) + " already exists. Please use a different name", Toast.LENGTH_SHORT).show();
+                //Clear fields
+                clearFields();
+
+            }
+        });
+
+        if(dbHandler.getProfileCount() != 0 )
+        profiles.addAll(dbHandler.getAllProfiles());
+        populateList();
+
+
+    }
+
+    /**=============================================================================================
+     * OnCreate Initializations
+     */
+    private void initVariables(){
+        nameTxt = (EditText) findViewById(R.id.pName);
+        //phoneTxt = (EditText) findViewById(R.id.)
+        amountTxt = (EditText) findViewById(R.id.amountEdit);
+        amountTxt.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(7,2)});
+        debtSwitch = (Switch) findViewById(R.id.debtSwitch);
+        descTxt = (EditText) findViewById(R.id.descriptionEdit);
+        saveBtn = (Button) findViewById(R.id.saveButton);
+        profileListView = (ListView) findViewById(R.id.listView);
+
+        dbHandler = new DatabaseHandler(getApplicationContext());
+    }
+
+    private void initTabs(){
         TabHost tabhost = (TabHost) findViewById(R.id.tabHost);
         tabhost.setup();
         TabHost.TabSpec tabSpec = tabhost.newTabSpec("all");
@@ -96,39 +141,21 @@ public class HomeScreen extends ActionBarActivity {
         tabSpec.setIndicator("Add Debt");
         tabhost.addTab(tabSpec);
 
-
-
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(debtSwitch.isChecked()){
-                    debtTypeTxt = "Owe";
-                }else{
-                    debtTypeTxt = "Spotted";
-                }
-
-               //DebtProfile profile = new DebtProfile(1, String.valueOf(nameTxt.getText()), Double.parseDouble(amountTxt.getText().toString()),debtTypeTxt, null, String.valueOf(descTxt.getText()));
-               DebtProfile profile = new DebtProfile(dbHandler.getProfileCount(), String.valueOf(nameTxt.getText()), Double.parseDouble(amountTxt.getText().toString()), debtTypeTxt, "", String.valueOf(descTxt.getText()));
-               if(!profileExists(profile)) {
-                   dbHandler.createDebtProfile(profile);
-                   profiles.add(profile);
-                   profileAdapter.notifyDataSetChanged();
-
-                   Toast.makeText(getApplicationContext(), String.valueOf(nameTxt.getText()) + " has been added", Toast.LENGTH_SHORT).show();
-                   return;
-               }
-                Toast.makeText(getApplicationContext(), String.valueOf(nameTxt.getText()) + " already exists. Please use a different name", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        if(dbHandler.getProfileCount() != 0 )
-        profiles.addAll(dbHandler.getAllProfiles());
-        populateList();
-
-
     }
 
+    private void clearFields(){
+        nameTxt.setText("");
+        amountTxt.setText("");
+        descTxt.setText("");
+        debtSwitch.setChecked(false);
+    }
+
+    //Initializations ==============================================================================
+
+    /**=============================================================================================
+     * Long pressing profiles on listView
+     *
+     */
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo){
         super.onCreateContextMenu(menu, view, menuInfo);
 
@@ -159,6 +186,8 @@ public class HomeScreen extends ActionBarActivity {
         return super.onContextItemSelected(item);
     }
 
+    //==============================================================================================
+
     private boolean profileExists(DebtProfile profile){
         String name = profile.getName();
         int profileCount = profiles.size();
@@ -171,6 +200,7 @@ public class HomeScreen extends ActionBarActivity {
         return false;
 
     }
+
     private void textListeners(){
         //Text changes
         nameTxt.addTextChangedListener(new TextWatcher() {
@@ -249,7 +279,11 @@ public class HomeScreen extends ActionBarActivity {
 
     }
 
-
+    /**=============================================================================================
+     * Standard code: Untouched.
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -271,8 +305,15 @@ public class HomeScreen extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    //=============================================================================================
 
+    /**
+     * Debug actions.
+     * @param msg
+     */
     public void debugText(String msg){
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
+
+
 }
