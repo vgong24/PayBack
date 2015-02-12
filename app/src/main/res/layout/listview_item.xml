@@ -3,7 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="10dp"
-    android:clickable="true">
+    android:longClickable="true"
+    android:background="@drawable/list_selector">
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,6 +45,5 @@
         android:maxLines="4"
         android:text="Description"
         android:id="@+id/descDisplay"
-        android:maxLength="100"
-        android:longClickable="true" />
+        android:maxLength="100" />
 </LinearLayout>

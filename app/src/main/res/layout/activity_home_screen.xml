@@ -36,7 +36,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/listView"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_gravity="center_horizontal"
+                        android:choiceMode="singleChoice"
+                        />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -65,7 +68,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
-                        android:text="Name"
+                        android:hint="John S."
                         android:ems="10"
                         android:id="@+id/pName"
                         android:layout_gravity="center_horizontal"
@@ -100,6 +103,7 @@
                             android:id="@+id/amountEdit"
                             android:layout_gravity="center_horizontal|right"
                             android:editable="true"
+                            android:hint="5.00"
                             android:paddingTop="10dp"
                             android:paddingBottom="10dp"
                             android:padding="10dp" />
@@ -142,7 +146,7 @@
                         android:ems="10"
                         android:id="@+id/descriptionEdit"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/description"
+                        android:hint="@string/description"
                         android:maxLength="100"
                         android:maxLines="4"
                         android:singleLine="true"

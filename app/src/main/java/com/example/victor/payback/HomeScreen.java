@@ -20,9 +20,15 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
+//Help
+//https://www.parse.com/tutorials/anywall-android#2-manage-users
 
 public class HomeScreen extends ActionBarActivity {
     private static final int EDIT = 0, DELETE = 1;
@@ -46,6 +52,18 @@ public class HomeScreen extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        /*
+        Parse.enableLocalDatastore(this);
+
+        Parse.initialize(this, "a2DlMumhUo2cXhX1UnY9nG7PxDUCfZf3glxTa7Ps", "bF6kYXauBnQMI1YhwRFcF0qInpibEBCnxj0YMoWU");
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "barrrr");
+        testObject.saveInBackground();
+        */
+
+
 
         //Initialize global variables
         initVariables();
