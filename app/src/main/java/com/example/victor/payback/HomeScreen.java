@@ -1,5 +1,6 @@
 package com.example.victor.payback;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ public class HomeScreen extends ActionBarActivity {
     String amtString = "", debtTypeTxt;// = amountTxt.getText().toString().trim();
     double amtdbl = 0.0;   // Double.parseDouble(amtString);
     Button saveBtn = null;
+    Button logOut = null;
 
     DatabaseHandler dbHandler;
     List<DebtProfile> profiles = new ArrayList<DebtProfile>();
@@ -86,6 +89,16 @@ public class HomeScreen extends ActionBarActivity {
         //Creating TabHost
         initTabs();
 
+        logOut.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOut();
+                startActivity(new Intent(v.getContext(), DispatchActivity.class));
+            }
+
+        });
+
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +144,7 @@ public class HomeScreen extends ActionBarActivity {
         debtSwitch = (Switch) findViewById(R.id.debtSwitch);
         descTxt = (EditText) findViewById(R.id.descriptionEdit);
         saveBtn = (Button) findViewById(R.id.saveButton);
+        logOut = (Button) findViewById(R.id.logOutBtn);
         profileListView = (ListView) findViewById(R.id.listView);
 
         dbHandler = new DatabaseHandler(getApplicationContext());

@@ -158,6 +158,14 @@
                         android:text="@string/saveButton"
                         android:id="@+id/saveButton"
                         android:layout_gravity="center_horizontal" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Log Out"
+                        android:id="@+id/logOutBtn"
+                        android:layout_gravity="center_horizontal"
+                        android:singleLine="false" />
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
