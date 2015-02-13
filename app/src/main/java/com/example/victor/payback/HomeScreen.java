@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +22,11 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -108,18 +112,45 @@ public class HomeScreen extends ActionBarActivity {
                 }else{
                     debtTypeTxt = "Spotted";
                 }
-
+                //Store data to Parse
                DebtProfile profile = new DebtProfile(dbHandler.getProfileCount(), String.valueOf(nameTxt.getText()), Double.parseDouble(amountTxt.getText().toString()), debtTypeTxt, "", String.valueOf(descTxt.getText()));
-               if(!profileExists(profile)) {
+               //send object to ParseDB
+                ParseObject debtprofile = new ParseObject("DebtProfile");
+                ParseUser puser = ParseUser.getCurrentUser();
+                debtprofile.put("username", puser.getUsername());
+                debtprofile.put("pid", dbHandler.getProfileCount());
+                debtprofile.put("name", String.valueOf(nameTxt.getText()));
+                debtprofile.put("amount", Double.parseDouble(amountTxt.getText().toString()));
+                debtprofile.put("debtType", debtTypeTxt);
+                debtprofile.put("Phone","");
+                debtprofile.put("description", String.valueOf(descTxt.getText()));
+                debtprofile.saveInBackground();
+
+                //Retrieve data from parse
+                ParseQuery query = new ParseQuery("DebtProfile");
+                query.whereEqualTo("username", puser.getUsername());
+                query.getFirstInBackground(new GetCallback() {
+                    public void done(ParseObject object, ParseException e) {
+                        if (object == null) {
+                            Toast.makeText(getApplicationContext(), "Didn't find it", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), object.getString("name"), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+
+                if(!profileExists(profile)) {
                    dbHandler.createDebtProfile(profile);
                    profiles.add(profile);
                    profileAdapter.notifyDataSetChanged();
 
-                   Toast.makeText(getApplicationContext(), String.valueOf(nameTxt.getText()) + " has been added", Toast.LENGTH_SHORT).show();
+                   //Toast.makeText(getApplicationContext(), String.valueOf(nameTxt.getText()) + " has been added", Toast.LENGTH_SHORT).show();
                    clearFields();
                    return;
                }
-                Toast.makeText(getApplicationContext(), String.valueOf(nameTxt.getText()) + " already exists. Please use a different name", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), String.valueOf(nameTxt.getText()) + " already exists. Please use a different name", Toast.LENGTH_SHORT).show();
                 //Clear fields
                 clearFields();
 
